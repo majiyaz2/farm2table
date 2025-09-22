@@ -8,7 +8,7 @@ const categories = [
     },
     {
       name: "Apples & Pears",
-      color: "#FF6B6B",
+      color: "#FF0050",
       slug: "apples-pears",
       subcategories: [
         { name: "Apples", slug: "apples" },
@@ -19,7 +19,7 @@ const categories = [
     },
     {
       name: "Stone Fruits & Cherries",
-      color: "#E76F51",
+      color: "#00FF88",
       slug: "stone-fruits-cherries",
       subcategories: [
         { name: "Peaches", slug: "peaches" },
@@ -31,7 +31,7 @@ const categories = [
     },
     {
       name: "Berries",
-      color: "#F94144",
+      color: "#FFAA00",
       slug: "berries",
       subcategories: [
         { name: "Strawberries", slug: "strawberries" },
@@ -43,7 +43,7 @@ const categories = [
     },
     {
       name: "Citrus Fruits",
-      color: "#FFB347",
+      color: "#FF6B6B",
       slug: "citrus-fruits",
       subcategories: [
         { name: "Oranges", slug: "oranges" },
@@ -55,7 +55,7 @@ const categories = [
     },
     {
       name: "Tropical Fruits",
-      color: "#F8961E",
+      color: "#4ECDC4",
       slug: "tropical-fruits",
       subcategories: [
         { name: "Bananas", slug: "bananas" },
@@ -67,7 +67,7 @@ const categories = [
     },
     {
       name: "Melons",
-      color: "#F9844A",
+      color: "#45B7D1",
       slug: "melons",
       subcategories: [
         { name: "Watermelons", slug: "watermelons" },
@@ -78,7 +78,7 @@ const categories = [
     },
     {
       name: "Grapes & More",
-      color: "#F3722C",
+      color: "#96CEB4",
       slug: "grapes-more",
       subcategories: [
         { name: "Grapes", slug: "grapes" },
@@ -90,7 +90,7 @@ const categories = [
     },
     {
       name: "Salad Greens",
-      color: "#2EC4B6",
+      color: "#FFEAA7",
       slug: "salad-greens",
       subcategories: [
         { name: "Lettuce", slug: "lettuce" },
@@ -102,7 +102,7 @@ const categories = [
     },
     {
       name: "Root Veggies",
-      color: "#E71D36",
+      color: "#D63031",
       slug: "root-veggies",
       subcategories: [
         { name: "Carrots", slug: "carrots" },
@@ -114,7 +114,7 @@ const categories = [
     },
     {
       name: "Broccoli & Cabbage Family",
-      color: "#8338EC",
+      color: "#6C5CE7",
       slug: "broccoli-cabbage",
       subcategories: [
         { name: "Broccoli", slug: "broccoli" },
@@ -126,7 +126,7 @@ const categories = [
     },
     {
       name: "Tomatoes & Peppers",
-      color: "#FF006E",
+      color: "#00B894",
       slug: "tomatoes-peppers",
       subcategories: [
         { name: "Tomatoes", slug: "tomatoes" },
@@ -137,7 +137,7 @@ const categories = [
     },
     {
       name: "Cucumbers & Squash",
-      color: "#A239CA",
+      color: "#FD79A8",
       slug: "cucumbers-squash",
       subcategories: [
         { name: "Cucumbers", slug: "cucumbers" },
@@ -149,7 +149,7 @@ const categories = [
     },
     {
       name: "Beans & Peas",
-      color: "#06FFA5",
+      color: "#A29BFE",
       slug: "beans-peas",
       subcategories: [
         { name: "Green Beans", slug: "green-beans" },
@@ -161,7 +161,7 @@ const categories = [
     },
     {
       name: "Herbs & Garlic",
-      color: "#3A86FF",
+      color: "#FDCB6E",
       slug: "herbs-garlic",
       subcategories: [
         { name: "Garlic", slug: "garlic" },
@@ -173,7 +173,7 @@ const categories = [
     },
     {
       name: "Organic & Special",
-      color: "#B8E6C9",
+      color: "#55A3FF",
       slug: "organic-special",
       subcategories: [
         { name: "Organic Fruits", slug: "organic-fruits" },

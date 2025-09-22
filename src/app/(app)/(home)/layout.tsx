@@ -5,6 +5,7 @@ import { Navbar } from "./navbar";
 import { Footer } from "./footer";
 import { SearchFilters } from "./search-filters";
 import { Category } from "@/payload-types";
+import { CustomCategory } from "./search-filters/types";
 
 interface Props {
     children: React.ReactNode;
@@ -26,10 +27,10 @@ const Layout = async ({ children }: Props) => {
         pagination: false,
     });
 
-    const formattedData = data.docs.map((doc) => ({
+    const formattedData: CustomCategory[] = data.docs.map((doc) => ({
         ...doc,
         subcategories: (doc.subcategories?.docs ?? []).map((sub) => ({
-            ...sub as Category,
+            ...(sub as Category),
             subcategories: undefined,
         }))
     }));
