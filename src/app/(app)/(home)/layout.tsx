@@ -3,7 +3,7 @@ import configPromise from "@payload-config";
 
 import { Navbar } from "./navbar";
 import { Footer } from "./footer";
-import { SearchFilters } from "./search-filters";
+import { SearchFilters, SearchFilterSkeleton } from "./search-filters";
 import { Category } from "@/payload-types";
 import { CustomCategory } from "./search-filters/types";
 import { trpc } from "@/trpc/server";
@@ -24,7 +24,7 @@ const Layout = async ({ children }: Props) => {
         <div className="flex flex-col min-h-screen">
            <Navbar />
            <HydrationBoundary state={dehydrate(queryClient)}>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<SearchFilterSkeleton/>}>
                     <SearchFilters/>
                 </Suspense>
            </HydrationBoundary>
