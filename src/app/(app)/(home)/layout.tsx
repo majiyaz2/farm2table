@@ -4,8 +4,6 @@ import configPromise from "@payload-config";
 import { Navbar } from "./navbar";
 import { Footer } from "./footer";
 import { SearchFilters, SearchFilterSkeleton } from "./search-filters";
-import { Category } from "@/payload-types";
-import { CustomCategory } from "./search-filters/types";
 import { trpc } from "@/trpc/server";
 import { getQueryClient } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";

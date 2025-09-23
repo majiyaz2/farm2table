@@ -1,9 +1,8 @@
-import { Category } from "@/payload-types";
 import Link from "next/link";
-import { CustomCategory } from "./types";
+import { CategoriesGetManyOutputSingle } from "@/modules/categories/types";
 
 interface Props {
-    category: CustomCategory;
+    category: CategoriesGetManyOutputSingle;
     isOpen: boolean;
     position: { top: number; left: number };
 }
@@ -35,7 +34,7 @@ export const SubcategoryMenu = ({
                 className="w-60 text-black rounded-md overflow-hidden border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -translate-x-[2px] -translate-y-[2px]"
             >
                 <div className="p-4">
-                    {category.subcategories.map((subcategory: CustomCategory) => (
+                    {category.subcategories.map((subcategory) => (
                         <Link 
                             href={`/${category.slug}/${subcategory.slug}`} 
                             key={subcategory.id}

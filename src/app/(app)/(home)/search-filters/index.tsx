@@ -2,7 +2,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Categories } from "./categories";
 import { SearchInput } from "./search-input";
-import { CustomCategory } from "./types";
 import { useTRPC } from "@/trpc/client";
 
 
