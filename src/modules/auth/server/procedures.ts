@@ -7,6 +7,7 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { cookies as getCookies } from "next/headers";
 import { AUTH_COOKIE } from "../constants";
+import { registerSchema, loginSchema } from "../schema";
 
 export const authRouter = createTRPCRouter({
     session: baseProcedure.query(async ({ctx}) => {
@@ -22,18 +23,27 @@ export const authRouter = createTRPCRouter({
       return {success: true};
     }),
     register: baseProcedure
-        .input(
-            z.object({
-                email: z.email(),
-                password: z.string().min(3),
-                username: z
-                    .string()
-                    .min(3, "Username must be at least 3 characters")
-                    .max(63, "Username must be less than 63 characters")
-                    .regex(/^[a-z0-9][a-z0-9]*[a-z0-9]+$/, "Username must contain only letters, numbers, and hyphens, and must start and end with a letter or number")
-            })
-        )
+        .input(registerSchema)
         .mutation(async ({ctx, input}) => {
+            const existingData = await ctx.db.find({
+                collection: 'users', 
+                limit: 1,
+                where: {
+                    username: {
+                        equals: input.username
+                    }
+                }
+            })
+
+            const existingUser = existingData?.docs[0]
+
+            if(existingUser) {
+                throw new TRPCError({
+                    code: 'BAD_REQUEST',
+                    message: 'Username already taken'
+                })
+            }
+
             const {email, password, username} = input
         
             const user = await ctx.db.create({
@@ -48,10 +58,7 @@ export const authRouter = createTRPCRouter({
     }),
     login: baseProcedure
         .input(
-            z.object({
-                email: z.email(),
-                password: z.string(),
-            })
+            loginSchema
         )
         .mutation(async ({ctx, input}) => {
             const {email, password} = input
@@ -79,6 +86,8 @@ export const authRouter = createTRPCRouter({
                 httpOnly:true,
                 path:"/"
             })
+
+            console.log(cookies)
 
             return user
            
