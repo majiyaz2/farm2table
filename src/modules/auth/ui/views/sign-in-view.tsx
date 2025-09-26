@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils"
 import { useMutation } from "@tanstack/react-query"
 import { useTRPC } from "@/trpc/client"
 import { useRouter } from "next/navigation"
+import { useQueryClient } from "@tanstack/react-query"
 
 const poppins = Poppins({
     subsets: ["latin"],
@@ -31,10 +32,11 @@ const poppins = Poppins({
 
 export const SignInView = () => {
     const router = useRouter()
-
+    const queryClient = useQueryClient()
     const trpc = useTRPC()
     const session = useMutation(trpc.auth.login.mutationOptions({
-        onSuccess: () => {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries(trpc.auth.session.queryFilter())
             toast("User logged in successfully")
             router.push("/")
         },

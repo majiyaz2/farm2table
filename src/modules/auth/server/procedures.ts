@@ -8,6 +8,7 @@ import { TRPCError } from "@trpc/server";
 import { cookies as getCookies } from "next/headers";
 import { AUTH_COOKIE } from "../constants";
 import { registerSchema, loginSchema } from "../schema";
+import { generateAuthCookie } from "../utils";
 
 export const authRouter = createTRPCRouter({
     session: baseProcedure.query(async ({ctx}) => {
@@ -54,7 +55,26 @@ export const authRouter = createTRPCRouter({
                 username
             }
         })
-        return user
+
+        const data = await ctx.db.login({
+            collection: 'users', 
+            data: {
+                email, 
+                password
+            }
+        })
+        if(!data.token) {
+            throw new TRPCError({
+                code: 'UNAUTHORIZED',
+                message: 'Failed to register user'
+            })
+        }
+        await generateAuthCookie({
+            prefix: ctx.db.config.cookiePrefix,
+            value: data.token
+         })
+
+        return data
     }),
     login: baseProcedure
         .input(
@@ -78,16 +98,10 @@ export const authRouter = createTRPCRouter({
                 })
             }
 
-            const cookies = await getCookies();
-
-            cookies.set({
-                name: AUTH_COOKIE,
-                value: user.token,
-                httpOnly:true,
-                path:"/"
-            })
-
-            console.log(cookies)
+         await generateAuthCookie({
+            prefix: ctx.db.config.cookiePrefix,
+            value: user.token
+         })
 
             return user
            
