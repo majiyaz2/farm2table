@@ -13,7 +13,7 @@ export function SearchFilters() {
             backgroundColor: "#F5F5F5"
         }}>
             <SearchInput />
-            <div className="hidden lg:block">
+            <div className="block">
                 <Categories data={data}/>
             </div>
         </div>
