@@ -1,9 +1,9 @@
 import { getPayload } from "payload";
 import configPromise from "@payload-config";
 
-import { Navbar } from "./navbar";
-import { Footer } from "./footer";
-import { SearchFilters, SearchFilterSkeleton } from "./search-filters";
+import { Navbar } from "@/modules/home/ui/components/navbar";
+import { Footer } from "@/modules/home/ui/components/footer";
+import { SearchFilters, SearchFilterSkeleton } from "@/modules/home/ui/components/search-filters";
 import { trpc } from "@/trpc/server";
 import { getQueryClient } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
