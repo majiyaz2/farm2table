@@ -27,7 +27,7 @@ export const Categories = ({ data }: Props) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const categoryParam = params.category as string | undefined;
-  const activeCategory = categoryParam || "all";
+    const activeCategory = categoryParam || "all";
 
     const activeCategoryIndex = data.findIndex((category) => category.slug === activeCategory);
     const isActiveCategoryHidden = activeCategoryIndex >= visibleCount && activeCategoryIndex !== -1;

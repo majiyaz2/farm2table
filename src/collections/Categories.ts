@@ -17,7 +17,6 @@ export const Categories: CollectionConfig = {
         {
             name: "color",
             type: "text",
-            defaultValue: "#000000",
         },
         {
             name: "parent",
