@@ -17,6 +17,9 @@ export const Products: CollectionConfig = {
             name: "price",
             type: "number",
             required: true,
+            admin: {
+                description: "in ZAR"
+            },
         },
         {
             name: "category",

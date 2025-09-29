@@ -191,6 +191,9 @@ export interface Product {
   id: string;
   name: string;
   description: string;
+  /**
+   * in ZAR
+   */
   price: number;
   category?: (string | null) | Category;
   image?: (string | null) | Media;
