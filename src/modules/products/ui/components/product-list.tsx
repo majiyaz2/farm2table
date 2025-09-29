@@ -11,13 +11,13 @@ export const ProductList = ({category}: Props) => {
     const trpc = useTRPC()
     const {data} = useSuspenseQuery(trpc.products.getMany.queryOptions({category}));
     return (
-        <div>
-            <h2>Product List</h2>
-            <ul>
-                {data.docs.map((product) => (
-                    <li key={product.id}>{product.name}</li>
-                ))}
-            </ul>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+           {data?.docs.map((product) =>(
+            <div key={product.id} className="border rounded-md bg-white p-4">
+                <h2 className="text-xl font-medium">{product.name}</h2>
+                <p>R {product.price}</p>
+            </div>
+           ))}
         </div>
     );
 };
