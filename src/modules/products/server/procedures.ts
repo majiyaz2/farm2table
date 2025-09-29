@@ -7,7 +7,7 @@ import { z } from "zod";
 export const productsRouter = createTRPCRouter({
     getMany: baseProcedure.input(z.object({
         category: z.string().nullable().optional(),
-    })).query(async ({ctx, input}) => {
+        })).query(async ({ctx, input}) => {
         const where:Where = {};
 
         if (input.category) {
@@ -37,10 +37,10 @@ export const productsRouter = createTRPCRouter({
             subcategorySlugs.push(
                 ...parentCategory.subcategories.map((subcategory) => subcategory.slug)
             )       
+            where["category.slug"] = {
+                in: [parentCategory.slug, ...subcategorySlugs]
+            };
         }
-        where["category.slug"] = {
-            in: [parentCategory.slug, ...subcategorySlugs]
-        };
         }
 
       
