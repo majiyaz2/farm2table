@@ -12,6 +12,6 @@ export const Users: CollectionConfig = {
       required: true,
       unique: true,
       type: 'text',
-      }
+    },
   ],
 }
