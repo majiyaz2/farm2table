@@ -1,7 +1,6 @@
-import { ProductList, ProductListSkeleton } from "@/modules/products/ui/components/product-list";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { Suspense } from "react";
+import { ProductListView } from "@/modules/products/ui/views/product-list-view";
 
 interface Props {
     params: Promise<{
@@ -20,9 +19,7 @@ const CategoryPage = async ({params}: Props) => {
     
     return (
         <HydrationBoundary state={dehydrate(queryClient)}>
-            <Suspense fallback={<ProductListSkeleton />}>
-                <ProductList category={subcategory} />
-            </Suspense>
+            <ProductListView category={subcategory}/>
         </HydrationBoundary>
     );
 };
