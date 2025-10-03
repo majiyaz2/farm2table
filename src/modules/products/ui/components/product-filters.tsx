@@ -45,7 +45,18 @@ export const ProductFilters = () => {
         });
     };
 
-    const hasAnyFilter = Object.values(filters).some((value) => value !== "");
+    const hasAnyFilter = Object.entries(filters).some(([key, value]) => {
+        if(key === "sort") return false;
+
+        if(Array.isArray(value)) {
+            return value.length > 0;
+        }
+        
+        if(typeof value === "string") {
+            return value !== "";
+        }
+       return value != null;
+    });
 
     const onChange = (key: keyof typeof filters, value: unknown) => {
         setFilters({ ...filters, [key]: value });

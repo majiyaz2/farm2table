@@ -1,19 +1,22 @@
-import { useQueryStates} from "nuqs";
-import {createLoader, parseAsArrayOf, parseAsString} from "nuqs/server";
+import { parseAsArrayOf, parseAsString, parseAsStringEnum, useQueryStates} from "nuqs";
 
-export const params = {
+const sortValues = ["curated", "trending", "hot_and_new"];
+const params = {
+    sort: parseAsStringEnum(sortValues).withDefault("curated").withOptions({
+        clearOnDefault: true
+    }),
     minPrice: parseAsString
     .withOptions({
         clearOnDefault: true
-    }),
+    }).withDefault(""),
     maxPrice: parseAsString
     .withOptions({
         clearOnDefault: true
-    }),
+    }).withDefault(""),
     tags: parseAsArrayOf(parseAsString)
     .withOptions({
         clearOnDefault: true
-    }),
+    }).withDefault([]),
 }
 
 export const useProductFilters = () => {
@@ -22,4 +25,3 @@ export const useProductFilters = () => {
 }
 
 
-export const loadProductFilters = createLoader(params);
