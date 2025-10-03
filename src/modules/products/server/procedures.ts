@@ -4,9 +4,12 @@ import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { Sort, Where } from "payload";
 import { z } from "zod";
 import { sortOptions } from "../searchParams";
+import { DEFAULT_PAGE_LIMIT } from "@/constants";
 
 export const productsRouter = createTRPCRouter({
     getMany: baseProcedure.input(z.object({
+        cursor: z.number().default(1),
+        limit: z.number().default(DEFAULT_PAGE_LIMIT),
         category: z.string().nullable().optional(),
         minPrice: z.string().nullable().optional(),
         maxPrice: z.string().nullable().optional(),
@@ -84,6 +87,8 @@ export const productsRouter = createTRPCRouter({
             depth: 1,
             where,
             sort,
+            page: input.cursor,
+            limit: input.limit,
         });
 
        
