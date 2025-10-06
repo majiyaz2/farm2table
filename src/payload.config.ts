@@ -44,7 +44,7 @@ export default buildConfig({
         products: {},
       },
       tenantsArrayField: {
-        includeDefaultField: false,
+        includeDefaultField: false, // Enable the default tenant selector field
       },
       userHasAccessToAllTenants: (user) => Boolean(user?.roles?.includes("super_admin")),
     }),

@@ -132,7 +132,13 @@ export interface UserAuthOperations {
 export interface User {
   id: string;
   username: string;
-  roles?: ('super_admin' | 'admin' | 'user')[] | null;
+  roles?: ('super_admin' | 'user')[] | null;
+  tenants?:
+    | {
+        tenant: string | Tenant;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -150,6 +156,29 @@ export interface User {
       }[]
     | null;
   password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenants".
+ */
+export interface Tenant {
+  id: string;
+  /**
+   * The name of the store (eg. Farm2Table)
+   */
+  name: string;
+  /**
+   * The slug of the store (eg. farm2table)
+   */
+  slug: string;
+  image?: (string | null) | Media;
+  stripeAccountId: string;
+  /**
+   * You cannot create products until you submit your stripe details
+   */
+  stripeDetailsSubscription?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -205,29 +234,6 @@ export interface Product {
   tags?: (string | Tag)[] | null;
   image?: (string | null) | Media;
   refundPolicy?: ('30-day' | '14-day' | '7-day' | '3-day' | '1-day' | 'no-refund') | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tenants".
- */
-export interface Tenant {
-  id: string;
-  /**
-   * The name of the store (eg. Farm2Table)
-   */
-  name: string;
-  /**
-   * The slug of the store (eg. farm2table)
-   */
-  slug: string;
-  image?: (string | null) | Media;
-  stripeAccountId: string;
-  /**
-   * You cannot create products until you submit your stripe details
-   */
-  stripeDetailsSubscription?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -322,6 +328,12 @@ export interface PayloadMigration {
 export interface UsersSelect<T extends boolean = true> {
   username?: T;
   roles?: T;
+  tenants?:
+    | T
+    | {
+        tenant?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   email?: T;

@@ -1,6 +1,6 @@
 
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
-import { Category } from "@/payload-types";
+import { Category, Tenant } from "@/payload-types";
 import { headers as getHeaders } from "next/headers";
 import { register } from "module";
 import { z } from "zod";
@@ -8,7 +8,7 @@ import { TRPCError } from "@trpc/server";
 import { cookies as getCookies } from "next/headers";
 import { AUTH_COOKIE } from "../constants";
 import { registerSchema, loginSchema } from "../schema";
-import { generateAuthCookie } from "../utils";
+import { generateAuthCookie, generateTenantCookie } from "../utils";
 
 export const authRouter = createTRPCRouter({
     session: baseProcedure.query(async ({ctx}) => {
@@ -44,37 +44,55 @@ export const authRouter = createTRPCRouter({
                     message: 'Username already taken'
                 })
             }
+            const tenant = await ctx.db.create({
+                collection: 'tenants', 
+                data: {
+                    name: input.username,
+                    slug: input.username,
+                    stripeAccountId: "test"
+                }
+            })
 
             const {email, password, username} = input
         
             const user = await ctx.db.create({
-            collection: 'users', 
-            data: {
-                email, 
-                password,
-                username
-            }
-        })
-
-        const data = await ctx.db.login({
-            collection: 'users', 
-            data: {
-                email, 
-                password
-            }
-        })
-        if(!data.token) {
-            throw new TRPCError({
-                code: 'UNAUTHORIZED',
-                message: 'Failed to register user'
+                collection: 'users', 
+                data: {
+                    email, 
+                    password,
+                    username,
+                    tenants: [
+                        {
+                            tenant: tenant.id
+                        }
+                    ]
+                }
             })
-        }
-        await generateAuthCookie({
-            prefix: ctx.db.config.cookiePrefix,
-            value: data.token
-         })
 
-        return data
+            const data = await ctx.db.login({
+                collection: 'users', 
+                data: {
+                    email, 
+                    password
+                }
+            })
+            if(!data.token) {
+                throw new TRPCError({
+                    code: 'UNAUTHORIZED',
+                    message: 'Failed to register user'
+                })
+            }
+            await generateTenantCookie({
+                prefix: ctx.db.config.cookiePrefix,
+                value: tenant.id
+            })
+
+            await generateAuthCookie({
+                prefix: ctx.db.config.cookiePrefix,
+                value: data.token
+            })
+
+            return data
     }),
     login: baseProcedure
         .input(
@@ -98,10 +116,15 @@ export const authRouter = createTRPCRouter({
                 })
             }
 
-         await generateAuthCookie({
-            prefix: ctx.db.config.cookiePrefix,
-            value: user.token
-         })
+            await generateAuthCookie({
+                prefix: ctx.db.config.cookiePrefix,
+                value: user.token
+            })
+            const tenant = user.user?.tenants?.[0].tenant as Tenant || ""
+            await generateTenantCookie({
+                prefix: ctx.db.config.cookiePrefix,
+                value: tenant.id
+            })
 
             return user
            

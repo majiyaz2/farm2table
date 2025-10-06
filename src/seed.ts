@@ -194,6 +194,30 @@ const seed = async () => {
     const payload = await getPayload({config})
 
     try {
+
+      const tenant = await payload.create({
+        collection: "tenants",
+        data: {
+          name: "Farm2Table",
+          slug: "farm2table",
+          stripeAccountId: "test",
+        },
+      });
+
+      const user = await payload.create({
+        collection: "users",
+        data: {
+          username: "admin",
+          email: "admin@farm2table.com",
+          password: "password",
+          roles: ["super_admin"],
+          tenants: [
+            {
+              tenant: tenant.id,
+            },
+          ],
+        },
+      });
      for (const category of categories) {
         const parentCategory = await payload.create({
             collection: "categories",
