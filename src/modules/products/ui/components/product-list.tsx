@@ -28,6 +28,8 @@ export const ProductList = ({category}: Props) => {
         }
     ));
 
+    console.log(data)
+
     if(data.pages?.[0]?.docs.length === 0){
         return(
             <div className=" flex border border=black border-dashed flex-items items-center justify-center p-8 flex-col gap-y-4 bg-white w-full rounded-lg">
@@ -46,8 +48,8 @@ export const ProductList = ({category}: Props) => {
                     id={product.id}
                     name={product.name}
                     imageUrl={product.image?.url}
-                    authorUsername={"Andile"}
-                    authorImageUrl={undefined}
+                    authorUsername={product.tenant?.name}
+                    authorImageUrl={product.tenant?.image?.url}
                     reviewRating={5}
                     reviewCount={10}
                     price={product.price}
