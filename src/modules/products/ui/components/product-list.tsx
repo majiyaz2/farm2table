@@ -10,15 +10,17 @@ import { InboxIcon } from "lucide-react";
 
 interface Props {
     category?: string;
+    tenantSlug?: string;
 }
 
-export const ProductList = ({category}: Props) => {
+export const ProductList = ({category, tenantSlug}: Props) => {
     const [filters] = useProductFilters();
     const trpc = useTRPC()
     const {data, isFetchingNextPage,hasNextPage, fetchNextPage} = useSuspenseInfiniteQuery(trpc.products.getMany.infiniteQueryOptions(
         {
         category,
-        ...filters,
+        tenantSlug,
+            ...filters,
         limit: DEFAULT_PAGE_LIMIT,
         },
         {
@@ -28,7 +30,6 @@ export const ProductList = ({category}: Props) => {
         }
     ));
 
-    console.log(data)
 
     if(data.pages?.[0]?.docs.length === 0){
         return(

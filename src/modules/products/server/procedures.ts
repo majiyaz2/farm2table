@@ -15,6 +15,7 @@ export const productsRouter = createTRPCRouter({
         maxPrice: z.string().nullable().optional(),
         tags: z.array(z.string()).nullable().optional(),
         sort: z.enum(sortOptions).nullable().optional(),
+        tenantSlug: z.string().nullable().optional(),
         })).query(async ({ctx, input}) => {
         const where:Where = {};
         let sort:Sort = "-createdAt";
@@ -41,6 +42,12 @@ export const productsRouter = createTRPCRouter({
                 less_than_equal: input.maxPrice
             }
         } 
+
+        if(input.tenantSlug){
+            where["tenant.slug"] = {
+                equals: input.tenantSlug
+            }
+        }
 
         
         if (input.category) {
