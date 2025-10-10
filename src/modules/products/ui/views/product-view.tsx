@@ -25,7 +25,7 @@ const ProductView = ({productId, tenantSlug}: ProductViewProps) => {
             <div className="border rounded-sm bg-white overflow-hidden">
                 <div className="relative aspect-[3.9] border-b">
                     <Image
-                        src={data?.image?.url || "/placeholder.png"}
+                        src={data?.cover?.url || "/placeholder.png"}
                         alt={data?.name}
                         fill
                         className="object-cover"
@@ -44,11 +44,11 @@ const ProductView = ({productId, tenantSlug}: ProductViewProps) => {
                             </div>
 
                             <div className="px-6 py-4 flex items-center justify-center lg:border-r">
-                                <Link href={generateTenantURL(data?.tenant.slug)} className="flex items-center gap-2">
+                                <Link href={generateTenantURL(tenantSlug)} className="flex items-center gap-2">
                                     {data?.tenant.image && (
                                         <Image
                                             src={data?.tenant.image?.url || "/placeholder.png"}
-                                            alt={data?.tenant.slug}
+                                            alt={data?.tenant.name}
                                             width={24}
                                             height={24}
                                             className="rounded-full border shrink-0 size-[16px]"
