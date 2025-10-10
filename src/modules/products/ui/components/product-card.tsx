@@ -10,8 +10,8 @@ interface ProductCardProps {
     id: string;
     name: string;
     imageUrl?: string | null;
-    authorUsername: string;
-    authorImageUrl?: string | null;
+    tenantSlug: string;
+    tenantImageUrl?: string | null;
     reviewRating: number;
     reviewCount: number;
     price: number;
@@ -22,8 +22,8 @@ export const ProductCard = ({
     id,
     name,
     imageUrl,
-    authorUsername,
-    authorImageUrl,
+    tenantSlug,
+    tenantImageUrl,
     reviewRating,
     reviewCount,
     price,
@@ -33,11 +33,11 @@ export const ProductCard = ({
     const handleUserClick = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
-        router.push(generateTenantURL(authorUsername))
+        router.push(generateTenantURL(tenantSlug))
 
     }
     return (
-        <Link href={`/products/${id}`}>
+        <Link href={`${generateTenantURL(tenantSlug)}/products/${id}`}>
             <div className="hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow border rounded-md bg-white overflow-hidden h-full flex flex-col">
                 <div className="relative aspect-square">
                     <Image
@@ -52,16 +52,16 @@ export const ProductCard = ({
                         {name}
                     </h2>
                     <div className="flex items-center gap-2" onClick={handleUserClick}>
-                        {authorImageUrl && (
+                        {tenantImageUrl && (
                             <Image
-                                alt={authorUsername}
+                                alt={tenantSlug}
                                 width={24}
                                 height={24}
-                                src={authorImageUrl}
+                                src={tenantImageUrl}
                                 className="rounded-full border shrink-0 size-[16px]"
                             />
                         )}
-                        <p className="text-sm underline font-medium">{authorUsername}</p>
+                        <p className="text-sm underline font-medium">{tenantSlug}</p>
                     </div>
                     {reviewCount > 0 && (
                         <div className="flex items-center gap-1">
