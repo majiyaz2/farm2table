@@ -7,6 +7,19 @@ import { sortOptions } from "../searchParams";
 import { DEFAULT_PAGE_LIMIT } from "@/constants";
 
 export const productsRouter = createTRPCRouter({
+    getOne: baseProcedure.input(
+        z.object({
+            id: z.string(),
+    })
+    )
+    .query(async ({ctx, input}) => {
+        const data = await ctx.db.findByID({
+            collection: "products",
+            id: input.id,
+            depth: 2,
+        });
+        return data;
+    }),
     getMany: baseProcedure.input(z.object({
         cursor: z.number().default(1),
         limit: z.number().default(DEFAULT_PAGE_LIMIT),
