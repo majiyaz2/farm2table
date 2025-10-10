@@ -1,6 +1,6 @@
 
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
-import { Category } from "@/payload-types";
+import { Category, Tenant, Media } from "@/payload-types";
 import z from "zod";
 import { DEFAULT_PAGE_LIMIT } from "@/constants";
 import { TRPCError } from "@trpc/server";
@@ -32,6 +32,6 @@ export const tenantsRouter = createTRPCRouter({
             });
           }
 
-          return tenant;
+          return tenant as Tenant & {image: Media | null};
     })
 })
