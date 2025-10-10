@@ -18,7 +18,11 @@ export const productsRouter = createTRPCRouter({
             id: input.id,
             depth: 2,
         });
-        return data;
+        return {
+            ...data,
+            image: data.image as Media | null,
+            tenant: data.tenant as Tenant & {image: Media | null}
+        };
     }),
     getMany: baseProcedure.input(z.object({
         cursor: z.number().default(1),

@@ -1,5 +1,5 @@
 "use client"
-import { generateTenantURL } from "@/lib/utils";
+import { formatCurrency, generateTenantURL } from "@/lib/utils";
 import { StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -74,11 +74,7 @@ export const ProductCard = ({
                 <div className="p-4">
                     <div className="relative px-2 py-1 border bg-pink-400 w-fit">
                         <p className="text-sm font-medium">
-                            {new Intl.NumberFormat("en-ZA", {
-                                style: "currency",
-                                currency: "ZAR",
-                                maximumFractionDigits: 0
-                            }).format(price)}
+                            {formatCurrency(price)}
                         </p>
                     </div>
                 </div>
