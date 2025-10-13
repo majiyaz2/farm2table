@@ -1,13 +1,6 @@
-import { getPayload } from "payload";
-import configPromise from "@payload-config";
 
-import { Footer } from "@/modules/home/ui/components/footer";
-import { SearchFilters, SearchFilterSkeleton } from "@/modules/home/ui/components/search-filters";
-import { trpc } from "@/trpc/server";
-import { getQueryClient } from "@/trpc/server";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { Suspense } from "react";
 import { Navbar } from "@/modules/checkout/ui/components/navbar";
+import { Footer } from "@/modules/tenants/ui/components/footer";
 
 interface Props {
     children: React.ReactNode;

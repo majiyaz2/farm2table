@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import { CheckoutItem } from "../components/checkout-item";
 import { generateTenantURL } from "@/lib/utils";
+import { CheckoutSidebar } from "../components/checkout-sidebar";
+import { InboxIcon, LoaderIcon } from "lucide-react";
 interface CheckoutViewProps {
     tenantSlug: string;
 }
@@ -24,7 +26,27 @@ export const CheckoutView = ({tenantSlug} : CheckoutViewProps) => {
             clearAllCarts()
             toast("Products not found")
         }
-    }, [error])
+    }, [error, clearAllCarts])
+    if(isLoading){
+        return (
+            <div className="lg:pt-16 pt-4 px-4 lg:px-12">
+                <div className=" flex border border=black border-dashed flex-items items-center justify-center p-8 flex-col gap-y-4 bg-white w-full rounded-lg">
+                    <LoaderIcon className="animate-spin text-muted-foreground"/>
+                </div>
+            </div>
+        );
+    }
+
+    if(!data || data.docs.length === 0){
+        return (
+            <div className="lg:pt-16 pt-4 px-4 lg:px-12">
+                <div className=" flex border border=black border-dashed flex-items items-center justify-center p-8 flex-col gap-y-4 bg-white w-full rounded-lg">
+                    <InboxIcon/>
+                    <p className=" text-base font-medium">No products found</p>
+                </div>
+            </div>
+        );
+    }
    
     return (
         <div className="lg:pt-16 pt-4 px-4 lg:px-12">
@@ -47,7 +69,12 @@ export const CheckoutView = ({tenantSlug} : CheckoutViewProps) => {
                     </div>
                 </div>
                 <div className="lg:col-span-3">
-                    Checkout sidebar
+                    <CheckoutSidebar
+                        total={data?.totalPrice || 0}
+                        onCheckout={() => {}}
+                        isPending={false}
+                        isCanceled={true}
+                    />
                 </div>
             </div>
         </div>
