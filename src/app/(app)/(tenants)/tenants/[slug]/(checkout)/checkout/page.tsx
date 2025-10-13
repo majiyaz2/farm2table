@@ -1,8 +1,13 @@
-const Page = () => {
+import { CheckoutView } from "@/modules/checkout/ui/views/checkout-view";
+
+interface PageProps {
+    params: Promise<{slug: string}>;
+}
+
+const Page = async ({params}: PageProps) => {
+    const {slug} = await params;
     return (
-        <div>
-            <h1>Checkout</h1>
-        </div>
+        <CheckoutView tenantSlug={slug}/>
     );
 };
 
