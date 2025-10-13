@@ -24,7 +24,7 @@ export const useCartStore = create<CartState>()(
                         ...state.tenantCarts,
                         [tenantSlug]: {
                             productIds: [
-                                ...state.tenantCarts[tenantSlug].productIds || [], 
+                                ...state.tenantCarts[tenantSlug]?.productIds || [], 
                                 productId
                             ]
                         }
@@ -35,7 +35,7 @@ export const useCartStore = create<CartState>()(
                     tenantCarts: {
                         ...state.tenantCarts,
                         [tenantSlug]: {
-                            productIds: state.tenantCarts[tenantSlug].productIds.filter(
+                            productIds: state.tenantCarts[tenantSlug]?.productIds?.filter(
                                 (id) => id !== productId
                             ) || []
                         }
@@ -54,7 +54,7 @@ export const useCartStore = create<CartState>()(
                 set({
                     tenantCarts: {}
                 }),
-            getCartByTenant: (tenantSlug: string) => get().tenantCarts[tenantSlug].productIds
+            getCartByTenant: (tenantSlug: string) => get().tenantCarts[tenantSlug]?.productIds || []
         }),
         {
             name: "farm2table-cart",
