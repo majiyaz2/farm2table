@@ -1,5 +1,5 @@
 
-import { Category, Media } from "@/payload-types";
+import { Category, Media, Tenant } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { Sort, Where } from "payload";
 import { z } from "zod";
@@ -7,6 +7,24 @@ import { sortOptions } from "../searchParams";
 import { DEFAULT_PAGE_LIMIT } from "@/constants";
 
 export const productsRouter = createTRPCRouter({
+    getOne: baseProcedure.input(
+        z.object({
+            id: z.string(),
+    })
+    )
+    .query(async ({ctx, input}) => {
+        const data = await ctx.db.findByID({
+            collection: "products",
+            id: input.id,
+            depth: 2,
+        });
+        return {
+            ...data,
+            image: data.image as Media | null,
+            cover: data.cover as Media | null,
+            tenant: data.tenant as Tenant & {image: Media | null}
+        };
+    }),
     getMany: baseProcedure.input(z.object({
         cursor: z.number().default(1),
         limit: z.number().default(DEFAULT_PAGE_LIMIT),
@@ -15,6 +33,7 @@ export const productsRouter = createTRPCRouter({
         maxPrice: z.string().nullable().optional(),
         tags: z.array(z.string()).nullable().optional(),
         sort: z.enum(sortOptions).nullable().optional(),
+        tenantSlug: z.string().nullable().optional(),
         })).query(async ({ctx, input}) => {
         const where:Where = {};
         let sort:Sort = "-createdAt";
@@ -41,6 +60,12 @@ export const productsRouter = createTRPCRouter({
                 less_than_equal: input.maxPrice
             }
         } 
+
+        if(input.tenantSlug){
+            where["tenant.slug"] = {
+                equals: input.tenantSlug
+            }
+        }
 
         
         if (input.category) {
@@ -84,21 +109,19 @@ export const productsRouter = createTRPCRouter({
       
         const data = await ctx.db.find({
             collection: "products",
-            depth: 1,
+            depth: 2,
             where,
             sort,
             page: input.cursor,
             limit: input.limit,
         });
-
-       
-      
           
         return {
             ...data,
             docs: data.docs.map((doc) => ({
                 ...doc,
-                image: doc.image as Media | null
+                image: doc.image as Media | null,
+                tenant: doc.tenant as Tenant & {image: Media | null}
             }))
         };
     })
