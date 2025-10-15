@@ -8,7 +8,7 @@ import { CheckoutMetadata, ProductMetadata } from "../types";
 import { stripe } from "@/lib/stripe";
 
 export const checkoutRouter = createTRPCRouter({
-    purchaseOrder: protectedProcedure
+    purchase: protectedProcedure
     .input(
         z.object({
             productIds: z.array(z.string()).min(1),
@@ -84,8 +84,8 @@ export const checkoutRouter = createTRPCRouter({
 
         const checkout = await stripe.checkout.sessions.create({
             customer_email: ctx.session.user.email,
-            success_url: `${process.env.NEXT_PUBLIC_URL}/tenants/${input.tenantSlug}/checkout?success=true`,
-            cancel_url: `${process.env.NEXT_PUBLIC_URL}/tenants/${input.tenantSlug}/checkout?cancel=true`,
+            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/tenants/${input.tenantSlug}/checkout?success=true`,
+            cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/tenants/${input.tenantSlug}/checkout?cancel=true`,
             line_items: lineItems,
             mode: "payment",
             invoice_creation: {
