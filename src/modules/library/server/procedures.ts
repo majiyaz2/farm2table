@@ -84,6 +84,8 @@ export const libraryRouter = createTRPCRouter({
                     }
                 }
             });
+            
+            // TODO: return an array of orders instead of products
             return {
                 ...products,
                 docs: products.docs.map((doc) => ({

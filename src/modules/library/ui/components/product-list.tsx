@@ -11,7 +11,7 @@ import { InboxIcon } from "lucide-react";
 
 export const ProductList = () => {
     const trpc = useTRPC()
-    const {data, isFetchingNextPage,hasNextPage, fetchNextPage} = useSuspenseInfiniteQuery(trpc.products.getMany.infiniteQueryOptions(
+    const {data, isFetchingNextPage,hasNextPage, fetchNextPage} = useSuspenseInfiniteQuery(trpc.library.getMany.infiniteQueryOptions(
         {
 
         limit: DEFAULT_PAGE_LIMIT,
