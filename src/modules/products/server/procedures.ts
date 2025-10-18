@@ -5,8 +5,57 @@ import { Sort, Where } from "payload";
 import { z } from "zod";
 import { sortOptions } from "../searchParams";
 import { DEFAULT_PAGE_LIMIT } from "@/constants";
+import {headers as getHeaders} from "next/headers";
 
 export const productsRouter = createTRPCRouter({
+    getOne: baseProcedure.input(
+        z.object({
+            id: z.string(),
+    })
+    )
+    .query(async ({ctx, input}) => {
+        const headers = await getHeaders();
+        const session = await ctx.db.auth({headers});
+
+        const data = await ctx.db.findByID({
+            collection: "products",
+            id: input.id,
+            depth: 2,
+        });
+
+        let isPurchased = false;
+        if(session.user){
+            const ordersData = await ctx.db.find({
+                collection: "orders",
+                pagination:false,
+                limit: 1,
+                where: {
+                    and:[
+                        {
+                            product: {
+                                equals: input.id
+                            }
+                        },
+                        {
+                            user: {
+                                equals: session.user.id
+                            }
+                        }
+                    ]
+                }
+            })
+
+            isPurchased = !!ordersData.docs[0];
+        }
+
+        return {
+            ...data,
+            isPurchased,
+            image: data.image as Media | null,
+            cover: data.cover as Media | null,
+            tenant: data.tenant as Tenant & {image: Media | null}
+        };
+    }),
     getMany: baseProcedure.input(z.object({
         cursor: z.number().default(1),
         limit: z.number().default(DEFAULT_PAGE_LIMIT),
